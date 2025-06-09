@@ -100,8 +100,8 @@ function renderPreview() {
     localStorage.setItem("rawHTML", rawHTML);
     localStorage.setItem("rawCSS", rawCSS);
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(rawHTML, "text/html");
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = rawHTML;
 
     const rulesets = rawCSS.split("}");
     for (let ruleset of rulesets) {
@@ -113,7 +113,7 @@ function renderPreview() {
 
         let elements;
         try {
-            elements = doc.querySelectorAll(selector);
+            elements = tempElement.querySelectorAll(selector);
         } catch (e) {
             console.warn("Invalid selector:", selector);
             continue;
@@ -125,8 +125,13 @@ function renderPreview() {
         }
     }
 
-    const output = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
+    const output = tempElement.innerHTML;
 
-    previewIframe.srcdoc = output;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(output, "text/html");
+    doc.body.style.margin = "0";
+    doc.body.style.padding = "0";
+
+    previewIframe.srcdoc = doc.documentElement.innerHTML;
     outputCodeElement.textContent = html_beautify(output);
 }
