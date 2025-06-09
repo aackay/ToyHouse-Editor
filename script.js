@@ -44,15 +44,13 @@ window.addEventListener("DOMContentLoaded", function() {
     for (element of document.querySelectorAll(".visibilityToggle")) {
         element.addEventListener("click", e => {
             const button = e.target;
-            const editor = button.parentElement.parentElement.querySelector(".editor");
             const column = button.parentElement.parentElement;
-            if (editor.style.display == "none") {
-                editor.style.display = "block";
-                column.style.flex = 1;
+            
+            if (column.classList.contains("hidden")) {
+                column.classList.remove("hidden");
                 button.innerText = "-";
             } else {
-                editor.style.display = "none";
-                column.style.flex = 0;
+                column.classList.add("hidden");
                 button.innerText = "+";
             }
         });
