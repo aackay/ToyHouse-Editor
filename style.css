@@ -17,24 +17,23 @@ html, body {
 .column {
     display: flex;
     flex-direction: column;
-    flex: 1; /* Let each column take equal width */
+    flex: 1;
 }
 
 .editorContainer {
     display: flex;
     flex-direction: column;
-    flex: 1; /* Make each editorContainer fill its column */
+    flex: 1;
 }
 
 .fileName {
-    height: 30px; /* fixed header height */
+    height: 30px;
     background: #f0f0f0;
     padding: 5px;
 }
 
 .editor {
     flex: 1;
-    /* optionally add min-height or overflow */
 }
 
 #rightColumn {
