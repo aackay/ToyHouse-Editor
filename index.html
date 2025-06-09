@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.42.0/src-noconflict/ace.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script src="script.js"></script>
+    <div class="mainContainer">
+        <div class="editorContainer column">
+            <div class="fileName">HTML</div>
+            <div id="htmlEditor" class="editor"></div>
+        </div>
+        <div class="editorContainer column">
+            <div class="fileName">CSS</div>
+            <div id="cssEditor" class="editor"></div>
+        </div>
+        <div id="rightColumn" class="column">
+            <div class="preview">
+                <button id="reloadPreview">Reload Preview</button>
+                <iframe id="previewRender"></iframe>
+            </div>
+            <div class="output">
+                <button id="copyOutput">Copy</button>
+                <textarea disabled id="outputCode"></textarea>
+            </div>
+            </textarea>
+        </div>
+    </div>
+</body>
+</html>
