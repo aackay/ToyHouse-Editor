@@ -102,29 +102,17 @@ function renderPreview() {
     localStorage.setItem("rawHTML", rawHTML);
     localStorage.setItem("rawCSS", rawCSS);
 
-    const tempElement = document.createElement("div");
-    tempElement.innerHTML = rawHTML;
+    // Parse full HTML into a real Document
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(rawHTML, "text/html");
 
-    let rulesets = rawCSS.split("}");
+    // Apply CSS rules directly into a <style> tag in <head>
+    const styleTag = doc.createElement("style");
+    styleTag.textContent = rawCSS;
+    doc.head.appendChild(styleTag);
 
-    for (ruleset of rulesets) {
-        let selector = ruleset.split("{")[0].trim();
-        if (!selector) continue;
-        try {
-            document.querySelector(selector);
-        } catch (error) {
-            console.error(`Selector not found: ${selector}`);
-            continue;
-        }
+    const output = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
 
-        const minified = ruleset.replace(/\s+/g, "");
-        const properties = minified.split("{")[1].trim().split(";");
-
-        for (element of tempElement.querySelectorAll(selector)) {
-            const propertyString = properties.join(";");
-            element.style.cssText = propertyString;
-        }
-    }
-    previewIframe.srcdoc = tempElement.innerHTML;
-    document.querySelector("#outputCode").innerHTML = html_beautify(tempElement.innerHTML);
+    previewIframe.srcdoc = output;
+    outputCodeElement.textContent = html_beautify(output);
 }
