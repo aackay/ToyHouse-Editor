@@ -9,12 +9,18 @@ window.addEventListener("DOMContentLoaded", function() {
     htmlEditor = ace.edit("htmlEditor");
     htmlEditor.setTheme("ace/theme/monokai");
     htmlEditor.session.setMode("ace/mode/html");
-    htmlEditor.setGhostText("HTML");
+    htmlEditor.setShowPrintMargin(false);
+    htmlEditor.setOptions({
+        placeholder: "Enter HTML...",
+    });
 
     cssEditor = ace.edit("cssEditor");
     cssEditor.setTheme("ace/theme/monokai");
     cssEditor.session.setMode("ace/mode/css");
-    cssEditor.setGhostText("css");
+    cssEditor.setShowPrintMargin(false);
+    cssEditor.setOptions({
+        placeholder: "Enter CSS...",
+    });
 
     const rawHTML = localStorage.getItem("rawHTML");
     const rawCSS = localStorage.getItem("rawCSS");
