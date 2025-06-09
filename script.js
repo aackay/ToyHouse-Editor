@@ -102,14 +102,30 @@ function renderPreview() {
     localStorage.setItem("rawHTML", rawHTML);
     localStorage.setItem("rawCSS", rawCSS);
 
-    // Parse full HTML into a real Document
     const parser = new DOMParser();
     const doc = parser.parseFromString(rawHTML, "text/html");
 
-    // Apply CSS rules directly into a <style> tag in <head>
-    const styleTag = doc.createElement("style");
-    styleTag.textContent = rawCSS;
-    doc.head.appendChild(styleTag);
+    const rulesets = rawCSS.split("}");
+    for (let ruleset of rulesets) {
+        const [selectorRaw, declarationsRaw] = ruleset.split("{");
+        if (!selectorRaw || !declarationsRaw) continue;
+
+        const selector = selectorRaw.trim();
+        const declarations = declarationsRaw.trim().replace(/\s*;\s*$/, ""); // trim last semicolon
+
+        let elements;
+        try {
+            elements = doc.querySelectorAll(selector);
+        } catch (e) {
+            console.warn("Invalid selector:", selector);
+            continue;
+        }
+
+        for (const el of elements) {
+            // Append to existing inline styles
+            el.style.cssText += declarations + ";";
+        }
+    }
 
     const output = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
 
