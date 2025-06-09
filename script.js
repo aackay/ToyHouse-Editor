@@ -1,7 +1,8 @@
 let htmlEditor;
 let cssEditor;
 let previewIframe;
-let outputCode
+let outputCode;
+let outputCodeElement;
 
 window.addEventListener("DOMContentLoaded", function() {
     htmlEditor = ace.edit("htmlEditor");
@@ -15,6 +16,8 @@ window.addEventListener("DOMContentLoaded", function() {
     cssEditor.setGhostText("css")
 
     previewIframe = document.querySelector("#previewRender");
+    outputCodeElement = document.querySelector("#outputCode");
+    const resizer = this.document.querySelector("#resizer")
 
     document.querySelector("#reloadPreview").addEventListener("click", renderPreview);
 
@@ -22,7 +25,28 @@ window.addEventListener("DOMContentLoaded", function() {
         outputCode = document.querySelector("#outputCode").value;
         console.log(outputCode)
         navigator.clipboard.writeText(outputCode);
-    })
+    });
+
+    let resizing = false;
+    let overlay = document.querySelector("#resizeOverlay");
+    resizer.addEventListener("mousedown", () => {
+        resizing = true;
+        overlay.style.display = "block";
+        document.body.style.userSelect = "none";
+    });
+
+    document.addEventListener("mouseup", () => {
+        resizing = false;
+        overlay.style.display = "none";
+        document.body.style.userSelect = "auto";
+    });
+
+    document.addEventListener("mousemove", e => {
+        if (resizing) {
+            console.log(e)
+            outputCodeElement.style.height = window.innerHeight - e.clientY + "px";
+        }
+    });
 });
 
 document.addEventListener("keydown", function(e) {

@@ -76,3 +76,21 @@ html, body {
     right: 0;
     top:0;
 }
+
+#resizer {
+    width: 100%;
+    height: 10px;
+    background: gray;
+
+    cursor: row-resize;
+}
+
+#resizeOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    z-index: 1000;
+}
