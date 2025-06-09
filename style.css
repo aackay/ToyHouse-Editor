@@ -36,6 +36,67 @@ button:active {
     background-color: #222;
 }
 
+.checkbox-container {
+    display: inline-flex;
+    align-items: center;
+    font-family: monospace;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-container input {
+    display: none;
+}
+
+.checkmark {
+    width: 16px;
+    height: 16px;
+    background-color: #222;
+    border: 1px solid #3a88ff;
+    border-radius: 3px;
+    margin-right: 8px;
+    position: relative;
+    transition: background-color 0.3s, border-color 0.3s;
+    box-shadow: 0 0 0 0 rgba(58, 136, 255, 0.5);
+}
+
+.checkbox-container input:checked + .checkmark {
+    background-color: #3a88ff;
+    border-color: #3a88ff;
+    animation: pulse 0.4s ease;
+}
+
+.checkmark::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transform: rotate(45deg) scale(0.8);
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.checkbox-container input:checked + .checkmark::after {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(58, 136, 255, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 0 4px rgba(58, 136, 255, 0);
+    }
+}
+
+
 
 .mainContainer {
     display: flex;

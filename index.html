@@ -27,9 +27,16 @@
             <div id="cssEditor" class="editor"></div>
         </div>
         <div id="rightColumn" class="column">
-            <div class="fileName">Preview</div>
-            <div class="preview">
+            <div class="header">
+                <div class="fileName">CSS</div>
+                <label class="checkbox-container">
+                    <input id="autoReload" type="checkbox" checked="true">
+                    <span class="checkmark"></span>
+                    Auto Reload
+                </label>
                 <button id="reloadPreview">Reload Preview</button>
+            </div>
+            <div class="preview">
                 <iframe id="previewRender"></iframe>
             </div>
             <div id="resizer"></div>

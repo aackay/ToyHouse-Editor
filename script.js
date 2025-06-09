@@ -3,6 +3,7 @@ let cssEditor;
 let previewIframe;
 let outputCode;
 let outputCodeElement;
+let autoReload = true;
 
 window.addEventListener("DOMContentLoaded", function() {
     htmlEditor = ace.edit("htmlEditor");
@@ -15,7 +16,6 @@ window.addEventListener("DOMContentLoaded", function() {
     cssEditor.session.setMode("ace/mode/css");
     cssEditor.setGhostText("css");
 
-    // load stored code from storage
     const rawHTML = localStorage.getItem("rawHTML");
     const rawCSS = localStorage.getItem("rawCSS");
     if (rawHTML) htmlEditor.setValue(rawHTML);
@@ -24,6 +24,18 @@ window.addEventListener("DOMContentLoaded", function() {
     setTimeout(() => {
         renderPreview();
     }, 500);
+
+    htmlEditor.on("input", () => {
+        if (autoReload) renderPreview();
+    });
+
+    cssEditor.on("input", () => {
+        if (autoReload) renderPreview();
+    });
+
+    document.querySelector("#autoReload").addEventListener("click", () => {
+        autoReload = !autoReload;
+    });
 
     previewIframe = document.querySelector("#previewRender");
     outputCodeElement = document.querySelector("#outputCode");
