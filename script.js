@@ -13,17 +13,43 @@ window.addEventListener("DOMContentLoaded", function() {
     cssEditor = ace.edit("cssEditor");
     cssEditor.setTheme("ace/theme/monokai");
     cssEditor.session.setMode("ace/mode/css");
-    cssEditor.setGhostText("css")
+    cssEditor.setGhostText("css");
+
+    // load stored code from storage
+    const rawHTML = localStorage.getItem("rawHTML");
+    const rawCSS = localStorage.getItem("rawCSS");
+    if (rawHTML) htmlEditor.setValue(rawHTML);
+    if (rawCSS) cssEditor.setValue(rawCSS);
+
+    setTimeout(() => {
+        renderPreview();
+    }, 500);
 
     previewIframe = document.querySelector("#previewRender");
     outputCodeElement = document.querySelector("#outputCode");
     const resizer = this.document.querySelector("#resizer")
 
+    for (element of document.querySelectorAll(".visibilityToggle")) {
+        element.addEventListener("click", e => {
+            const button = e.target;
+            const editor = button.parentElement.parentElement.querySelector(".editor");
+            const column = button.parentElement.parentElement;
+            if (editor.style.display == "none") {
+                editor.style.display = "block";
+                column.style.flex = 1;
+                button.innerText = "-";
+            } else {
+                editor.style.display = "none";
+                column.style.flex = 0;
+                button.innerText = "+";
+            }
+        });
+    }
+
     document.querySelector("#reloadPreview").addEventListener("click", renderPreview);
 
     document.querySelector("#copyOutput").addEventListener("click", () => {
         outputCode = document.querySelector("#outputCode").value;
-        console.log(outputCode)
         navigator.clipboard.writeText(outputCode);
     });
 
@@ -43,7 +69,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
     document.addEventListener("mousemove", e => {
         if (resizing) {
-            console.log(e)
             outputCodeElement.style.height = window.innerHeight - e.clientY + "px";
         }
     });
@@ -57,16 +82,28 @@ document.addEventListener("keydown", function(e) {
     }
 }, false);
 
+
 function renderPreview() {
-    const tempElement = document.createElement("div");
-    tempElement.innerHTML = htmlEditor.getValue();
+    const rawHTML = htmlEditor.getValue();
     const rawCSS = cssEditor.getValue();
+
+    localStorage.setItem("rawHTML", rawHTML);
+    localStorage.setItem("rawCSS", rawCSS);
+
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = rawHTML;
 
     let rulesets = rawCSS.split("}");
 
     for (ruleset of rulesets) {
         let selector = ruleset.split("{")[0].trim();
         if (!selector) continue;
+        try {
+            document.querySelector(selector);
+        } catch (error) {
+            console.error(`Selector not found: ${selector}`);
+            continue;
+        }
 
         const minified = ruleset.replace(/\s+/g, "");
         const properties = minified.split("{")[1].trim().split(";");
@@ -76,6 +113,6 @@ function renderPreview() {
             element.style.cssText = propertyString;
         }
     }
-    previewIframe.srcdoc = tempElement.outerHTML;
-    document.querySelector("#outputCode").innerText = tempElement.outerHTML;
+    previewIframe.srcdoc = tempElement.innerHTML;
+    document.querySelector("#outputCode").innerHTML = html_beautify(tempElement.innerHTML);
 }

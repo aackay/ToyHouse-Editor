@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'SpaceMono';
+    src: URL('fonts/SpaceMono-Regular.ttf') format('truetype');
+}
+
 * {
     box-sizing: border-box;
 }
@@ -5,7 +10,32 @@
 html, body {
     margin: 0;
     height: 100%;
+    
+    font-family: SpaceMono, monospace;
+
+    background: #272822;
+    color: white;
 }
+
+
+button {
+    background-color: #444;            /* Dark, but distinct */
+    color: #fff;                        /* High contrast text */
+    border: 1px solid #888;            /* Subtle border */
+    border-radius: 4px;
+    font-family: SpaceMono, monospace;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: #666;
+}
+
+button:active {
+    background-color: #222;
+}
+
 
 .mainContainer {
     display: flex;
@@ -18,6 +48,8 @@ html, body {
     display: flex;
     flex-direction: column;
     flex: 1;
+
+    border-right: 5px solid #333;
 }
 
 .editorContainer {
@@ -26,10 +58,22 @@ html, body {
     flex: 1;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+
 .fileName {
     height: 30px;
-    background: #f0f0f0;
     padding: 5px;
+    display: inline-block;
+}
+
+.visibilityToggle {
+    float: right;
 }
 
 .editor {
@@ -45,6 +89,7 @@ html, body {
 .preview {
     position: relative;
     flex: 1;
+    background: white;
 }
 
 .preview > iframe {
@@ -69,6 +114,9 @@ html, body {
     height: 150px;
 
     resize: none;
+
+    background: #272822;
+    color: white;
 }
 
 .output > button {
@@ -80,8 +128,7 @@ html, body {
 #resizer {
     width: 100%;
     height: 10px;
-    background: gray;
-
+    background:  #333;
     cursor: row-resize;
 }
 
