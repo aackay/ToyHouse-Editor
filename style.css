@@ -324,7 +324,7 @@ button:active {
     transform: translate(-50%, -50%);
     width: 40px;
     height: 3px;
-    background: #333333;
+    background: #8b5cf6;
     border-radius: 2px;
     opacity: 0.7;
 }
